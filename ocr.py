@@ -8,7 +8,7 @@ from segmentation_characters import get_characters
 from user_input import get_string_from_nn
 import gtts as gTTS
 import os
-
+from progress.bar import Bar
 from dict import correction
 
 #input image should have white bg, black text
@@ -21,32 +21,38 @@ def perform_ocr(img_url):
 
 	raw_image = cv2.imread(img_url,0)
 	#cv2.imshow('image',raw_image)
+	#cv2.waitKey(0)
 
 	#get all the words (as an numpy image array), words on each line, and maximum height on that line
 	all_words, words_on_line, max_height_on_line = get_words(raw_image)
 	#print('ocr: ',all_words)
 
-	print ("no. of lines = ",len(words_on_line))
-	print (words_on_line)
-	print ("no. of words = ",len(all_words))
+	print ("Total no. of lines = ",len(words_on_line))
+	print ("Words per line = " ,words_on_line)
+	print ("Total no. of words = ",len(all_words))
 
 	#to write the output into a file
 	fp = open("output.txt", 'w')
 	fp.truncate()
+
+	#start loading bar
+	bar = Bar('Loading...', max=len(all_words))
 
 	count = 0
 	for i in range(0, len(words_on_line)):
 
 		for j in range(0, words_on_line[i]):
 
+			#update loading bar
+			bar.next()
 			all_characters = get_characters(all_words[count],max_height_on_line[i],i,j)
 
 			if use_dict:
-				print (correction(get_string_from_nn(all_characters)),)
+				# print (correction(get_string_from_nn(all_characters)),)
 				fp.write(correction(get_string_from_nn(all_characters)))
 				fp.write(" ")
 			else:
-				print (get_string_from_nn(all_characters),)
+				# print (get_string_from_nn(all_characters),)
 				fp.write(get_string_from_nn(all_characters))
 				fp.write(" ")
 
@@ -58,5 +64,9 @@ def perform_ocr(img_url):
 
 		#print ("\n")
 		fp.write("\n")
+		# bar.next()
+	#close loading bar
+	bar.finish()
 
 	fp.close()
+	print("\nconversion completed successfully")
