@@ -2,7 +2,7 @@
 
 from ocr import perform_ocr
 
-perform_ocr("DSC_0511.jpg")
+perform_ocr(".\image_samples\Test_.jpg")
 
 import os
 import subprocess, sys
