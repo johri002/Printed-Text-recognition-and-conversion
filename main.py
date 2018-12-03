@@ -2,7 +2,14 @@
 
 from ocr import perform_ocr
 
-perform_ocr(".\image_samples\Test_.jpg")
+perform_ocr("DSC_0511.jpg")
 
 import os
-os.startfile("output.txt")
+import subprocess, sys
+
+if sys.platform == "win32":
+	os.startfile("output.txt")
+else:
+	opener ="open" if sys.platform == "darwin" else "xdg-open"
+	subprocess.call([opener, "output.txt"])
+
