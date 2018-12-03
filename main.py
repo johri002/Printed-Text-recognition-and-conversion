@@ -5,4 +5,4 @@ from ocr import perform_ocr
 perform_ocr(".\image_samples\Test_.jpg")
 
 import os
-#os.startfile("output.txt")
+os.startfile("output.txt")
