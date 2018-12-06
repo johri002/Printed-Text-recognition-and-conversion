@@ -9,7 +9,9 @@ import subprocess, sys
 
 if sys.platform == "win32":
 	os.startfile("output.txt")
+	print (os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "\output.txt")
 else:
 	opener ="open" if sys.platform == "darwin" else "xdg-open"
 	subprocess.call([opener, "output.txt"])
+	print (os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + "\output.txt")
 
